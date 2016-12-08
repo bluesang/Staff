@@ -29,32 +29,48 @@ public class StaffInsertServlet extends HttpServlet {
 	}
 
 	
+	@SuppressWarnings("null")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("-----------StaffInsertServlet doPost 메서드 실행------------");
+		
 		request.setCharacterEncoding("euc-kr");
 		String s_name=request.getParameter("s_name");
 		System.out.println("param s_name is" + s_name);
+		
 		String s_secnoFront=request.getParameter("s_secnoFront");
 		String s_secnoBack=request.getParameter("s_secnoBack");
 		String s_secno = s_secnoFront + "-" + s_secnoBack;
 		System.out.println("param s_secno is" + s_secno);
-		int r_no=Integer.parseInt(request.getParameter("r_no"));
-		int sc_no=Integer.parseInt(request.getParameter("sc_no"));
-		int sk_no = Integer.parseInt(request.getParameter("sk_no"));
-		System.out.println("sk_no is" + sk_no);
 		String s_graduateday = request.getParameter("s_graduateday");
+		System.out.println("s_graduateday is "+s_graduateday);
 		
-		Staff staff = null;
+		int r_no=Integer.parseInt(request.getParameter("r_no"));
+		System.out.println("param r_no is " + r_no);
+		int sc_no=Integer.parseInt(request.getParameter("sc_no"));
+		System.out.println("param sc_no is " + sc_no);
+		
+		Staff staff = new Staff();
 		staff.setS_name(s_name);
 		staff.setS_secno(s_secno);
 		staff.setR_no(r_no);
 		staff.setSc_no(sc_no);
 		staff.setS_graduateday(s_graduateday);
 		
+		System.out.println("insertStaff 메서드 실행 전");
 		StaffDao dao = new StaffDao();
-		staff = dao.insertStaff();
+		dao.insertStaff(staff);
+		
+		String[] sk_no = request.getParameterValues("sk_no");
+		int[] skillNo = new int[sk_no.length];
+		for(int i=0;i<sk_no.length;i++){
+			skillNo[i] = Integer.parseInt(sk_no[i]);
+			StaffSkill staffskill = new StaffSkill();
+			staffskill.setSk_no(skillNo[i]);
+			dao.insertStaffSkill(s_secno,staffskill);
+		}
 		
 		System.out.println("-----------StaffInsertServlet doPost 메서드 종료------------");
 	}
+
 
 }

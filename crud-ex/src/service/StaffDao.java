@@ -92,28 +92,23 @@ public class StaffDao {
 		return religionList;
 	}
 	
-	public StaffSkill insertStaffSkill(int s_secno, int sk_no){
-		StaffSkill staffskill = null;
+	public void insertStaffSkill(String s_secno, StaffSkill staffskill){
 			try{
 				conn= this.getConnection();
 				stmt = conn.prepareStatement("INSERT INTO staffskill(s_no,sk_no)VALUES((SELECT s_no FROM staff WHERE s_secno=?),?)");
-				stmt.setInt(1, s_secno);
-				stmt.setInt(1, sk_no);
-				rs=stmt.executeQuery();
-				if(rs.next()){
-					staffskill = new StaffSkill();
-					
-				}
+				stmt.setString(1, s_secno);
+				stmt.setInt(2, staffskill.getSk_no());
+				stmt.executeUpdate();
+				
 			}catch(Exception e){
 				e.printStackTrace();
 			}finally{
 				this.close(conn, stmt, rs);
 			}
-		return staffskill;
+	
 	}
 	//staff 정보 입력 메서드
-	public Staff insertStaff(){
-		Staff staff = null;
+	public void insertStaff(Staff staff){
 			try{
 				conn = this.getConnection();
 				stmt = conn.prepareStatement("INSERT INTO staff(s_name,s_secno,s_graduateday,sc_no,r_no) VALUES(?,?,?,?,?)");
@@ -124,8 +119,8 @@ public class StaffDao {
 				stmt.setInt(4, staff.getSc_no());
 				stmt.setInt(5, staff.getR_no());
 				System.out.println("stmt2 is " + stmt);
-				rs= stmt.executeQuery();
-				System.out.println("staffrs complete!");
+				stmt.executeUpdate();
+				System.out.println("stmt complete!");
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -134,7 +129,6 @@ public class StaffDao {
 			}
 			
 		System.out.println("--------------------insertStaff 메서드 종료--------------------");
-		return staff;
 	}
 	
 	//db 연결 메서드
