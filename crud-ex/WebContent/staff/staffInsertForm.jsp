@@ -17,36 +17,43 @@
 		</tr>
 		<tr>
 			<td>주민번호 :</td>
-			<td><input type="text" name="s_secnoFront"/>
-			<label> - </label>  </td>
+			<td>
+				<input type="text" name="s_secnoFront"/>
+				<label> - </label>
+			</td>  
 			<td><input type="text" name="s_secnoBack"/></td>
 		</tr>
 		<tr>
 			<td>종교</td>
 			<td>
-				<select name="r_name">
-					<option></option>
-					<option></option>
-					<option></option>
-					<option></option>
+				<select name="r_no">
+					<option>종교선택</option>
+					<c:forEach var="religionList" items="${religionList}">
+						<option value="${religionList.r_no}">${religionList.r_name}</option>
+					</c:forEach>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td><label>학력 :</label></td>
 			<td>
-				<input type="radio" name="sc_graduate"/>고졸
-				<input type="radio" name="sc_graduate"/>전문대졸
-				<input type="radio" name="sc_graduate"/>일반대졸
+				<c:forEach var="schoolList" items="${schoolList}">
+					<input type="radio" name="sc_no" value="${schoolList.sc_no}"/>${schoolList.sc_graduate}
+				</c:forEach>
 			</td>
 		</tr>
 		
 		<tr>
 			<td>기술</td>
-			<td>
-				<c:forEach var="i" items="${skill}">
-					<input type="checkbox" name="sk_name" id="sk_name" value="${i.sk_no}"/>${i.sk_name}	
+			<td colspan="2">
+				<c:forEach var="skillList" items="${skillList}">
+					<input type="checkbox" name="sk_no" value="${skillList.sk_no}"/>${skillList.sk_name}	
 				</c:forEach>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="date" name="s_graduateday"/>
 			</td>
 		</tr>
 		

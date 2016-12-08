@@ -4,8 +4,26 @@ public class Staff {
 	private int s_no;
 	private String s_name;
 	private String s_secno;
-	private int s_graduateday;
+	private String s_graduateday;
+	private int sc_no;
+	private int r_no;
 	
+	public int getSc_no() {
+		return sc_no;
+	}
+
+	public void setSc_no(int sc_no) {
+		this.sc_no = sc_no;
+	}
+
+	public int getR_no() {
+		return r_no;
+	}
+
+	public void setR_no(int r_no) {
+		this.r_no = r_no;
+	}
+
 	public int getS_no() {
 		return s_no;
 	}
@@ -26,10 +44,10 @@ public class Staff {
 	public void setS_secno(String s_secno) {
 		this.s_secno = s_secno;
 	}
-	public int getS_graduateday() {
+	public String getS_graduateday() {
 		return s_graduateday;
 	}
-	public void setS_graduateday(int s_graduateday) {
+	public void setS_graduateday(String s_graduateday) {
 		this.s_graduateday = s_graduateday;
 	}
 	

@@ -25,17 +25,17 @@ public class StaffDao {
 	//기술 선택사항 Mysql에서 불러오기
 	public ArrayList<Skill> selectSkill(){
 		System.out.println("--------------------selectSkill 메서드 실행--------------------");
-		ArrayList<Skill> als = new ArrayList<Skill>();
+		ArrayList<Skill> skillList = new ArrayList<Skill>();
 		try{
 			conn = this.getConnection();
 			stmt = conn.prepareStatement("SELECT * FROM skill ORDER BY sk_no ASC");
 			System.out.println("stmt is" + stmt);
 			rs = stmt.executeQuery();
-			if(rs.next()){
+			while(rs.next()){
 				sk = new Skill();
 				sk.setSk_no(rs.getInt("sk_no"));
 				sk.setSk_name(rs.getString("sk_name"));
-				als.add(sk);
+				skillList.add(sk);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -43,21 +43,22 @@ public class StaffDao {
 			this.close(conn, stmt, rs);
 		}
 		System.out.println("--------------------selectSkill 메서드 종료--------------------");
-		return als;
+		return skillList;
 	}
 		
 	//학교졸업 선택사항 Mysql에서 불러오기
-	public School selectSchoolGraduate(int sc_no){
+	public ArrayList<School> selectSchoolGraduate(){
 		System.out.println("--------------------selectSchoolGraduate 메서드 실행--------------------");
+		ArrayList<School> schoolList = new ArrayList<School>();
 		try{
 			conn = this.getConnection();
-			stmt = conn.prepareStatement("SELECT sc_graduate FROM school WHERE sc_no=?");
-			stmt.setInt(1, sc_no);
+			stmt = conn.prepareStatement("SELECT * FROM school ORDER BY sc_no ASC");
 			rs = stmt.executeQuery();
-			if(rs.next()){
+			while(rs.next()){
 				sc = new School();
-				sc.setSc_no(sc_no);
-				sc.setSc_name(rs.getString("sc_graduate"));
+				sc.setSc_no(rs.getInt("sc_no"));
+				sc.setSc_graduate(rs.getString("sc_graduate"));
+				schoolList.add(sc);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -65,21 +66,22 @@ public class StaffDao {
 			this.close(conn, stmt, rs);
 		}
 		System.out.println("--------------------selectSchoolGraduate 메서드 종료--------------------");
-		return sc;
+		return schoolList;
 	}
 	
 	//종교 선택사항 Mysql에서 불러오기
-	public Religion selectReligion(int r_no){
+	public ArrayList<Religion> selectReligion(){
 		System.out.println("--------------------selectReligion 메서드 실행--------------------");
+		ArrayList<Religion> religionList = new ArrayList<Religion>();
 		try{
 			conn = this.getConnection();
-			stmt = conn.prepareStatement("SELECT r_name FROM religion WHERE r_no=?");
-			stmt.setInt(1, r_no);
+			stmt = conn.prepareStatement("SELECT * FROM religion ORDER BY r_no ASC");
 			rs = stmt.executeQuery();
-			if(rs.next()){
+			while(rs.next()){
 				re = new Religion();
-				re.setR_no(r_no);
+				re.setR_no(rs.getInt("r_no"));
 				re.setR_name(rs.getString("r_name"));
+				religionList.add(re);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -87,22 +89,55 @@ public class StaffDao {
 			this.close(conn, stmt, rs);
 		}
 		System.out.println("--------------------selectReligion 메서드 종료--------------------");
-		return re;
+		return religionList;
 	}
-	public int insertStaff(Staff staff){
-		int staffCount = 0;
-		
+	
+	public StaffSkill insertStaffSkill(int s_secno, int sk_no){
+		StaffSkill staffskill = null;
 			try{
-				conn = this.getConnection();
-				stmt = conn.prepareStatement("INSERT INTO staff() VALUES()");
+				conn= this.getConnection();
+				stmt = conn.prepareStatement("INSERT INTO staffskill(s_no,sk_no)VALUES((SELECT s_no FROM staff WHERE s_secno=?),?)");
+				stmt.setInt(1, s_secno);
+				stmt.setInt(1, sk_no);
+				rs=stmt.executeQuery();
+				if(rs.next()){
+					staffskill = new StaffSkill();
+					
+				}
 			}catch(Exception e){
 				e.printStackTrace();
 			}finally{
 				this.close(conn, stmt, rs);
-				
 			}
-		return staffCount;
+		return staffskill;
 	}
+	//staff 정보 입력 메서드
+	public Staff insertStaff(){
+		Staff staff = null;
+			try{
+				conn = this.getConnection();
+				stmt = conn.prepareStatement("INSERT INTO staff(s_name,s_secno,s_graduateday,sc_no,r_no) VALUES(?,?,?,?,?)");
+				System.out.println("stmt is " + stmt);
+				stmt.setString(1, staff.getS_name());
+				stmt.setString(2, staff.getS_secno());
+				stmt.setString(3, staff.getS_graduateday());
+				stmt.setInt(4, staff.getSc_no());
+				stmt.setInt(5, staff.getR_no());
+				System.out.println("stmt2 is " + stmt);
+				rs= stmt.executeQuery();
+				System.out.println("staffrs complete!");
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}finally{
+				this.close(conn, stmt, rs);
+			}
+			
+		System.out.println("--------------------insertStaff 메서드 종료--------------------");
+		return staff;
+	}
+	
+	//db 연결 메서드
 	private Connection getConnection(){	
 		Connection conn = null;
 		try{
