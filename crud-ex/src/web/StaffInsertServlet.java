@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Controller.StaffInsertDao;
 import service.*;
 
 
@@ -17,7 +18,7 @@ public class StaffInsertServlet extends HttpServlet {
 	
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		StaffDao dao = new StaffDao();
+		StaffInsertDao dao = new StaffInsertDao();
 		ArrayList<Skill> skillList = dao.selectSkill();
 		ArrayList<School> schoolList = dao.selectSchoolGraduate();
 		ArrayList<Religion> religionList = dao.selectReligion();
@@ -57,7 +58,7 @@ public class StaffInsertServlet extends HttpServlet {
 		staff.setS_graduateday(s_graduateday);
 		
 		System.out.println("insertStaff 메서드 실행 전");
-		StaffDao dao = new StaffDao();
+		StaffInsertDao dao = new StaffInsertDao();
 		dao.insertStaff(staff);
 		
 		String[] sk_no = request.getParameterValues("sk_no");
